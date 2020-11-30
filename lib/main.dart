@@ -1,23 +1,21 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+import 'app.dart';
+import 'model/app_state_model.dart';
 
 void main() {
-  runApp(MyApp());
-}
+  // This app is designed only to work vertically, so we limit
+  // orientations to portrait up and down.
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Welcome to Flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Welcome to Flutter'),
-        ),
-        body: Center(
-          child: Text('Hello World, 永正'),
-        ),
-      ),
-    );
-  }
+  return runApp(
+    ChangeNotifierProvider<AppStateModel>(
+      builder: (context) => AppStateModel()..loadProducts(), // NEW
+      child: CupertinoStoreApp(),
+    ),
+  );
 }
